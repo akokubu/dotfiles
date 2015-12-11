@@ -7,41 +7,43 @@ export PATH=$PATH:~/Library/Android/sdk/platform-tools
 # Postgresql
 PGDATA=/usr/local/var/postgres/
 
-#function peco_select_from_git_status(){
-#   git status --porcelain | \
-#    peco | \
-#    awk -F ' ' '{print $NF}' | \
-#    tr '\n' ' '
-#}
-
-#function peco_insert_selected_git_files(){
-#    LBUFFER+=$(peco_select_from_git_status)
-#    CURSOR=$#LBUFFER
-#    zle reset-prompt
-#}
-
-#zle -N peco_insert_selected_git_files
-#bindkey "^g^f" peco_insert_selected_git_files
+for conf in $HOME/.zshrc_config/.zsh_*; do
+    source ${conf};
+done
 
 
-autoload -Uz compinit
-compinit -u
+# 補完機能
+# ----------------------------
+## 補完機能をON
+autoload -Uz compinit; compinit -u
 
+
+# ターミナル
+# ----------------------------
+## ベルを鳴らさない
+setopt NO_BEEP
+## ctrl+Dでログアウトしない
+setopt IGNORE_EOF
+## ディレクトリ名だけでcd
 setopt AUTO_CD
+## cdで移動してもディレクトリスタックを追加
 setopt AUTO_PUSHD
+## 重複したディレクトリを追加しない
 setopt PUSHD_IGNORE_DUPS
+
+
 
 autoload -Uz select-word-style
 select-word-style default
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
 
-setopt IGNORE_EOF
 setopt NO_FLOW_CONTROL
-setopt NO_BEEP
 
-bindkey '^r' history-incremental-pattern-search-backward
-bindkey '^s' history-incremental-pattern-search-forward
+
+#TODO
+#bindkey '^r' history-incremental-pattern-search-backward
+#bindkey '^s' history-incremental-pattern-search-forward
 
 autoload -Uz history-search-end 
 zle -N history-beginning-search-backward-end history-search-end
@@ -93,7 +95,7 @@ setopt inc_append_history
 #if [ "`boot2docker status`" = "running" ]; then
 #   $(boot2docker shellinit)
 #fi
-eval $(docker-machine env dev)
+#eval $(docker-machine env dev)
 
 #----- cdr
 autoload -Uz is-at-least
@@ -202,12 +204,6 @@ zle -N peco_bookmark
 bindkey '^\' peco_bookmark
 export PATH=$PATH:/Users/akokubu/.nodebrew/current/bin
 
-# aws
-#source aws_zsh_completer.sh 
-#export PATH="$PATH:/usr/local/AWS-ElasticBeanstalk-CLI-2.6.4/eb/macosx/python2.7"
-
-#source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-#source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.composer/vendor/bin:$PATH"
