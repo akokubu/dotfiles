@@ -1,0 +1,51 @@
+# git diff with peco
+function peco-select-gitdiff() {
+    local SELECTED_FILE_TO_DIFF="$(git status --short | \
+                                  peco --query "$LBUFFER" | \
+                                  awk -F ' ' '{print $NF}')"
+    if [ -n "$SELECTED_FILE_TO_DIFF" ]; then
+      BUFFER="git diff $(echo "$SELECTED_FILE_TO_DIFF" | tr '\n' ' ')"
+      CURSOR=$#BUFFER
+    fi
+    zle accept-line
+    # zle clear-screen
+}
+zle -N peco-select-gitdiff
+bindkey "^g^f" peco-select-gitdiff
+
+# git add with peco
+function peco-select-gitadd() {
+    local SELECTED_FILE_TO_ADD="$(git status --porcelain | \
+                                  peco --query "$LBUFFER" | \
+                                  awk -F ' ' '{print $NF}')"
+    if [ -n "$SELECTED_FILE_TO_ADD" ]; then
+      BUFFER="git add $(echo "$SELECTED_FILE_TO_ADD" | tr '\n' ' ')"
+      CURSOR=$#BUFFER
+    fi
+    zle accept-line
+    # zle clear-screen
+}
+
+zle -N peco-select-gitadd
+bindkey "^g^a" peco-select-gitadd
+
+# git status を ctrl+g２回に設定
+function git-st-short() {
+  echo git status -sb
+  git st -sb
+  zle reset-prompt
+}
+zle -N git-st-short
+bindkey "^g^g" git-st-short
+
+# git add F のように使う。pecoでファイル選択
+function git-changed-files(){                 
+  git status --short | peco | awk '{print $2}'
+}
+alias -g F='$(git-changed-files)'
+
+# git co BB のように使う。pecoでブランチ選択
+function peco-git-branch(){
+    git branch | peco | sed -e "s/^\*[ ]*//g"
+}
+alias -g BB='$(peco-git-branch)'

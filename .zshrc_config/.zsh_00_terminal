@@ -1,0 +1,26 @@
+# ターミナル
+# ----------------------------
+## 補完機能をON
+autoload -Uz compinit; compinit -u
+## ベルを鳴らさない
+setopt no_beep
+setopt nolistbeep
+## ctrl+Dでログアウトしない
+setopt IGNORE_EOF
+## ディレクトリ名だけでcd
+setopt AUTO_CD
+## cdで移動してもディレクトリスタックを追加
+setopt AUTO_PUSHD
+## 重複したディレクトリを追加しない
+setopt PUSHD_IGNORE_DUPS
+# 候補が多い場合は詰めて表示
+setopt list_packed
+
+# ターミナルのタイトル
+case "${TERM}" in
+kterm*|xterm)
+    precmd() {
+        echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+    }
+    ;;
+esac
