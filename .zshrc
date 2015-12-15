@@ -11,23 +11,11 @@ for conf in $HOME/.zshrc_config/.zsh_*; do
     source ${conf};
 done
 
-
-
-
-
-
-
-
-
-
-
-
 autoload -Uz select-word-style
 select-word-style default
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
 
-setopt NO_FLOW_CONTROL
 
 
 zstyle ':completion:*:default' menu select=2
@@ -98,6 +86,15 @@ function peco_bookmark() {
 }
 zle -N peco_bookmark
 #bindkey '^\' peco_bookmark
+
+
+
+
+
+
+
+
+
 
 
 export PATH="/usr/local/sbin:$PATH"

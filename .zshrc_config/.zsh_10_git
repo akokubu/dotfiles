@@ -38,6 +38,16 @@ function git-st-short() {
 zle -N git-st-short
 bindkey "^g^g" git-st-short
 
+# git log を ctrl+g, lに設定
+function git-graph() {
+  echo git graph
+  git graph
+  zle reset-prompt
+}
+zle -N git-graph
+bindkey "^g^r" git-graph
+
+
 # git add F のように使う。pecoでファイル選択
 function git-changed-files(){                 
   git status --short | peco | awk '{print $2}'
