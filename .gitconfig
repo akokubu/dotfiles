@@ -1,0 +1,24 @@
+[user]
+	name = Atsushi Kokubu
+	email = akokubu@longposition.co.jp
+[core]
+	excludesfile = $HOME/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /opt/homebrew-cask/Caskroom/sourcetree/1.8.1/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[color]
+	ui = auto
+[alias]
+	st = status
+	co = checkout
+	cm = commit
+	br = branch
+	graph = log --graph --date=short --pretty=\"format:%C(yellow)%h %C(cyan)%ad %C(green)%an%Creset%x09%s %C(red)%d%Creset\"
+  detect-branches = !git checkout $(git branch | peco)
+[push]
+	default = simple
+
+
