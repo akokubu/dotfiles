@@ -2,7 +2,7 @@
 	name = Atsushi Kokubu
 	email = akokubu@longposition.co.jp
 [core]
-	excludesfile = $HOME/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 

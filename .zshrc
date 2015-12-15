@@ -1,5 +1,4 @@
 fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=($HOME/zsh/functions/cd-bookmark(N-/) $fpath)
 
 # Android Studio adb
 export PATH=$PATH:~/Library/Android/sdk/platform-tools
@@ -21,7 +20,30 @@ zstyle ':zle:*' word-style unspecified
 zstyle ':completion:*:default' menu select=2
 
 
-#----- cdr
+
+
+
+
+# antigen なければインストールとかにしちゃってもいいのかも。
+if [[ -f ~/.zsh/antigen/antigen.zsh ]]; then
+    source ~/.zsh/antigen/antigen.zsh
+    antigen bundle mollifier/anyframe
+    antigen apply
+fi
+
+# zsh plugin
+#autoload -Uz anyframe-init; anyframe-init
+
+# 履歴
+alias his=anyframe-widget-execute-history
+
+# cd
+alias cdd=anyframe-widget-cdr
+
+zle -N anyframe-widget-cdr
+bindkey "^o" anyframe-widget-cdr
+
+# cdr
 autoload -Uz is-at-least
 if is-at-least 4.3.11
 then
@@ -32,6 +54,7 @@ then
   zstyle ':completion:*' recent-dirs-insert both
 fi
 
+# select history
 function peco-select-history() {
     local tac
     if which tac > /dev/null; then
@@ -39,25 +62,15 @@ function peco-select-history() {
     else
         tac="tail -r"
     fi
-    BUFFER=$(history -n 1 | \
+    BUFFER=$(\history -n 1 | \
         eval $tac | \
         peco --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
 zle -N peco-select-history
-#bindkey '^m' peco-select-history
+bindkey '^r' peco-select-history
 
-function peco-cdr () {
-    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-cdr
-#bindkey '^m' peco-cdr
 
 # C-nで下のディレクトリに移動する
 function cddown_dir(){
@@ -75,24 +88,7 @@ done
 zle reset-prompt
 }
 zle -N cddown_dir
-#bindkey '^n' cddown_dir
-
-
-autoload -Uz cd-bookmark
-alias cdb='cd-bookmark'
-
-function peco_bookmark() {
-    cdb `cdb | peco | awk -F"|" '{print $1}'`
-}
-zle -N peco_bookmark
-#bindkey '^\' peco_bookmark
-
-
-
-
-
-
-
+bindkey '^n' cddown_dir
 
 
 
