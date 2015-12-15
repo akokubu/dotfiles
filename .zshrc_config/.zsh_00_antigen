@@ -1,0 +1,6 @@
+# antigen
+if [[ -f ~/.zsh/antigen/antigen.zsh ]]; then
+    source ~/.zsh/antigen/antigen.zsh
+    antigen bundle mollifier/anyframe
+    antigen apply
+fi

@@ -16,6 +16,16 @@ setopt PUSHD_IGNORE_DUPS
 # 候補が多い場合は詰めて表示
 setopt list_packed
 
+# 補完侯補をメニューから選択する。
+# select=2: 補完候補を一覧から選択する。補完候補が2つ以上なければすぐに補完する
+zstyle ':completion:*:default' menu select=2
+
+# 単語の区切り
+autoload -Uz select-word-style
+select-word-style default
+zstyle ':zle:*' word-chars " /=;@:{},|"
+zstyle ':zle:*' word-style unspecified
+
 # ターミナルのタイトル
 case "${TERM}" in
 kterm*|xterm)
@@ -24,3 +34,38 @@ kterm*|xterm)
     }
     ;;
 esac
+
+# cd
+alias cdd=anyframe-widget-cdr
+
+zle -N anyframe-widget-cdr
+bindkey "^o" anyframe-widget-cdr
+
+# cdr
+autoload -Uz is-at-least
+if is-at-least 4.3.11
+then
+  autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+  add-zsh-hook chpwd chpwd_recent_dirs
+  zstyle ':chpwd:*' recent-dirs-max 5000
+  zstyle ':chpwd:*' recent-dirs-default yes
+  zstyle ':completion:*' recent-dirs-insert both
+fi
+
+# C-nで下のディレクトリに移動する
+function cddown_dir(){
+com='$SHELL -c "ls -AF . | grep / "'
+while [ $? = 0 ]
+do
+    cdir=`eval $com | peco`
+    if [ $? = 0 ];then
+        cd $cdir
+        eval $com
+    else
+        break
+    fi
+done
+zle reset-prompt
+}
+zle -N cddown_dir
+bindkey '^n' cddown_dir
