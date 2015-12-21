@@ -1,0 +1,2 @@
+#! /bin/bash
+time nice -n19 brew update && time nice -n19 brew upgrade && time nice -n19 brew cleanup && for c in `brew cask list`; do ! brew cask info $c | grep -qF "Not installed" || time nice -n19 brew cask install $c; done && time nice -n19 brew cask cleanup && for c in /opt/homebrew-cask/Caskroom/*; do vl=(`ls -t $c`) && for v in "${vl[@]:1}"; do \rm -rf "$c/$v"; done; done
