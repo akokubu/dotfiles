@@ -1,6 +1,7 @@
 [user]
 	name = Atsushi Kokubu
 	email = akokubu@longposition.co.jp
+	username = akokubu
 [core]
 	excludesfile = ~/.gitignore_global
 [difftool "sourcetree"]
